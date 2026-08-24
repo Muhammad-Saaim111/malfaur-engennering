@@ -57,25 +57,6 @@
                     {{ $product->description }}
                 </p>
 
-                {{-- Key specs highlights --}}
-                @if(count($product->specs) > 0)
-                <details style="background:var(--light-bg); border-radius:var(--radius-md); padding: 1.25rem 1.5rem; border-left: 4px solid var(--accent); margin-bottom: 2rem; outline:none;" class="iso-details-collapse">
-                    <summary style="font-size:0.9rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--navy); cursor:pointer; list-style:none; display:flex; justify-content:space-between; align-items:center; user-select:none;">
-                        <span>ISO Material Codes</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" style="width:16px; height:16px; transition:transform 0.2s;" class="collapse-icon">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
-                        </svg>
-                    </summary>
-                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 0.75rem 1.5rem; margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 1rem;">
-                        @foreach($product->specs as $spec)
-                            <div style="display:flex; justify-content:flex-start; align-items:baseline; font-size:0.875rem; border-bottom: 1px dashed var(--border); padding-bottom: 0.35rem;">
-                                <span style="color:var(--text-secondary); font-weight:700; width:30px; flex-shrink:0;">{{ $spec[0] }}</span>
-                                <span style="color:var(--text-primary); text-align:left;">{{ $spec[1] }}</span>
-                            </div>
-                        @endforeach
-                    </div>
-                </details>
-                @endif
 
                 {{-- Action buttons --}}
                 <div style="display:flex; gap: 1rem; flex-wrap:wrap; margin-top:auto;">
@@ -137,6 +118,47 @@
                     </div>
                 @endif
             @endforeach
+        </div>
+    </div>
+</section>
+@endif
+
+{{-- Full Width Technical Specifications Table --}}
+@if(count($product->specs) > 0)
+<section class="section-pad bg-white">
+    <div class="container">
+        <div style="margin-bottom:2rem;">
+            <span class="section-label">Specifications</span>
+            <h2 class="heading-1" style="color:var(--navy); margin-bottom:0;">Technical Specifications</h2>
+        </div>
+        <div style="overflow-x:auto; border: 1px solid var(--border); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); background:#ffffff;">
+            <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.95rem;">
+                <tbody>
+                    @foreach($product->specs as $index => $spec)
+                        <tr style="border-bottom: 1px solid var(--border); background: {{ $index % 2 == 0 ? '#ffffff' : 'var(--lighter-bg)' }}; transition: background 0.2s;" onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background='{{ $index % 2 == 0 ? '#ffffff' : 'var(--lighter-bg)' }}'">
+                            <th style="padding: 1.2rem 1.5rem; color: var(--navy); font-weight: 700; width: 35%; border-right: 1px solid var(--border); text-transform: uppercase; letter-spacing: 0.03em; font-size: 0.85rem;">
+                                {{ $spec[0] }}
+                            </th>
+                            <td style="padding: 1.2rem 1.5rem; color: var(--text-primary); line-height: 1.6; white-space: pre-wrap;">{{ $spec[1] }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+@endif
+
+{{-- Dimension Image --}}
+@if(isset($product->specifications['dimension_image']))
+<section class="section-pad" style="padding-bottom: 0;">
+    <div class="container">
+        <div style="margin-bottom:2rem;">
+            <span class="section-label">Dimensions</span>
+            <h2 class="heading-1" style="color:var(--navy); margin-bottom:0;">Technical Drawings</h2>
+        </div>
+        <div style="background:#ffffff; border: 1px solid var(--border); border-radius: var(--radius-md); padding: 2rem; display:flex; justify-content:center; box-shadow: var(--shadow-sm); overflow-x: auto;">
+            <img src="{{ $product->specifications['dimension_image'] }}" alt="Dimension drawing for {{ $product->name }}" style="max-width:100%; height:auto; image-rendering: crisp-edges; mix-blend-mode: multiply;">
         </div>
     </div>
 </section>

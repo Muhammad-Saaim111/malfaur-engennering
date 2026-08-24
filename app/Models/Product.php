@@ -52,7 +52,7 @@ class Product extends Model
         $rawSpecs = $this->specifications;
         if (is_array($rawSpecs)) {
             foreach ($rawSpecs as $key => $val) {
-                if ($key !== 'dimensions' && !str_ends_with($key, '_state') && is_string($val)) {
+                if ($key !== 'dimensions' && $key !== 'dimension_image' && !str_ends_with($key, '_state') && is_string($val)) {
                     $specs[] = [$key, $val];
                 }
             }

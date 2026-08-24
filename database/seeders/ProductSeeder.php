@@ -70,6 +70,21 @@ class ProductSeeder extends Seeder
                 ]
             ],
             [
+                'name' => 'Digital 3-Point Internal Micrometer',
+                'category' => 'Measuring Equipment',
+                'description' => 'These are three-point internal micrometers that offer you the following benefits: Individual micrometer. Titanium-coated measuring pins give you excellent durability and impact resistance. They also have excellent resistance against water and dust (IP65 protection level), allowing you to use this product in machining situations that include splashing coolant fluid. Large LCD display with character height of 7,5 mm enables you to read measurements easily. Without setting rings or extensions.',
+                'short_description' => 'Titanium-coated IP65 digital 3-point internal micrometer (6-8mm range) by Mitutoyo.',
+                'image' => 'https://shop.mitutoyo.co.uk/media/mitutoyoData/IM/bigweb/468-161_z_jpg.webp',
+                'specs' => [
+                    ['Item Number', '468-161'],
+                    ['Model', 'HTD-8R'],
+                    ['Range', '6–8 mm'],
+                    ['Resolution', '0.001 mm'],
+                    ['Accuracy', '±2 µm'],
+                    ['Price', '£1,332.00']
+                ]
+            ],
+            [
                 'name' => 'Deep Groove Ball Bearings',
                 'category' => 'Standard Parts',
                 'description' => 'High-grade steel ball bearings manufactured to standard ISO and DIN tolerances. Perfect for standard rotary power transmission and load bearing.',
