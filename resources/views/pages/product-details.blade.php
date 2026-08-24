@@ -59,7 +59,7 @@
 
                 {{-- Key specs highlights --}}
                 @if(count($product->specs) > 0)
-                <details style="background:var(--light-bg); border-radius:var(--radius-md); padding: 1.25rem 1.5rem; border-left: 4px solid var(--accent); margin-bottom: 2rem; outline:none;" open class="iso-details-collapse">
+                <details style="background:var(--light-bg); border-radius:var(--radius-md); padding: 1.25rem 1.5rem; border-left: 4px solid var(--accent); margin-bottom: 2rem; outline:none;" class="iso-details-collapse">
                     <summary style="font-size:0.9rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--navy); cursor:pointer; list-style:none; display:flex; justify-content:space-between; align-items:center; user-select:none;">
                         <span>ISO Material Codes</span>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" style="width:16px; height:16px; transition:transform 0.2s;" class="collapse-icon">
@@ -68,9 +68,9 @@
                     </summary>
                     <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 0.75rem 1.5rem; margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 1rem;">
                         @foreach($product->specs as $spec)
-                            <div style="display:flex; justify-content:space-between; font-size:0.875rem; border-bottom: 1px dashed var(--border); padding-bottom: 0.35rem; align-items: baseline;">
-                                <span style="color:var(--text-secondary); font-weight:600; flex-shrink:0; margin-right:1rem;">{{ $spec[0] }}</span>
-                                <span style="color:var(--text-primary); text-align:right;">{{ $spec[1] }}</span>
+                            <div style="display:flex; justify-content:flex-start; align-items:baseline; font-size:0.875rem; border-bottom: 1px dashed var(--border); padding-bottom: 0.35rem;">
+                                <span style="color:var(--text-secondary); font-weight:700; width:30px; flex-shrink:0;">{{ $spec[0] }}</span>
+                                <span style="color:var(--text-primary); text-align:left;">{{ $spec[1] }}</span>
                             </div>
                         @endforeach
                     </div>
