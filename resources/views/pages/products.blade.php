@@ -80,7 +80,9 @@
                     <p class="product-card-desc">{{ $product->short_description ?? Str::limit($product->description, 100) }}</p>
                     <div class="product-card-footer">
                         @if(!empty($product->specs) && is_array($product->specs) && count($product->specs) > 0)
-                            <span class="caption text-muted">{{ $product->specs[0][0] ?? '' }}: {{ $product->specs[0][1] ?? '' }}</span>
+                            <span class="caption text-muted" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; max-width: 100%;">
+                                {{ $product->specs[0][0] ?? '' }}: {{ \Illuminate\Support\Str::limit($product->specs[0][1] ?? '', 35) }}
+                            </span>
                         @else
                             <span class="caption text-muted">Precision Engineered</span>
                         @endif

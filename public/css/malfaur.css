@@ -520,7 +520,7 @@ input, textarea, select { font-family: inherit; }
   height: 100%;
   object-fit: contain;
   background: var(--white);
-  padding: 1rem;
+  padding: 3rem 1.5rem 1.5rem 1.5rem;
   transition: transform 0.45s ease;
 }
 .product-card:hover .product-card-image img { transform: scale(1.06); }

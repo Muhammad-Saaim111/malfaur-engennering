@@ -31,7 +31,7 @@
                 <div style="background:#ffffff; border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 2rem; display:flex; align-items:center; justify-content:center; aspect-ratio:1; box-shadow: var(--shadow-sm); overflow:hidden;">
                     <img src="{{ asset(Str::startsWith($product->image ?? '', 'http') ? $product->image : 'images/' . ($product->image ?? 'hero-engineering.png')) }}" 
                          alt="{{ $product->name }}" 
-                         style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges;">
+                         style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain;">
                 </div>
                 
                 {{-- Engineering Certification badging --}}
