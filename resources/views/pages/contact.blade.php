@@ -8,7 +8,7 @@
 {{-- ═══════════════════════════════════════
      PAGE HERO
 ═══════════════════════════════════════ --}}
-<section class="page-hero" style="padding:5.5rem 0;" aria-labelledby="contact-hero-heading">
+<section class="page-hero" aria-labelledby="contact-hero-heading">
     <div class="page-hero-image" aria-hidden="true">
         <img src="{{ asset('images/hero-engineering.png') }}" alt="" loading="eager">
     </div>

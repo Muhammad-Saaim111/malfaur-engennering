@@ -43,6 +43,162 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    /* ── 3-Way Cascading Products Mega Dropdown ── */
+    const navProductsItem = document.getElementById('navProductsItem');
+    const navProductsTrigger = document.getElementById('navProductsTrigger');
+    const megaDropdown = document.getElementById('productsMegaDropdown');
+
+    if (navProductsItem && megaDropdown) {
+        let closeTimer = null;
+
+        function openMegaMenu() {
+            if (closeTimer) clearTimeout(closeTimer);
+            megaDropdown.classList.add('is-open');
+            navProductsItem.classList.add('is-open');
+            if (navProductsTrigger) {
+                navProductsTrigger.classList.add('menu-open');
+                navProductsTrigger.setAttribute('aria-expanded', 'true');
+            }
+        }
+
+        function closeMegaMenu() {
+            closeTimer = setTimeout(function () {
+                megaDropdown.classList.remove('is-open');
+                navProductsItem.classList.remove('is-open');
+                if (navProductsTrigger) {
+                    navProductsTrigger.classList.remove('menu-open');
+                    navProductsTrigger.setAttribute('aria-expanded', 'false');
+                }
+            }, 180);
+        }
+
+        // Trigger hover
+        navProductsItem.addEventListener('mouseenter', openMegaMenu);
+        navProductsItem.addEventListener('mouseleave', closeMegaMenu);
+
+        // Mega dropdown hover (keep open)
+        megaDropdown.addEventListener('mouseenter', function () {
+            if (closeTimer) clearTimeout(closeTimer);
+        });
+        megaDropdown.addEventListener('mouseleave', closeMegaMenu);
+
+        // Close on ESC
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && megaDropdown.classList.contains('is-open')) {
+                megaDropdown.classList.remove('is-open');
+                navProductsItem.classList.remove('is-open');
+                if (navProductsTrigger) {
+                    navProductsTrigger.classList.remove('menu-open');
+                    navProductsTrigger.setAttribute('aria-expanded', 'false');
+                }
+            }
+        });
+
+        // Close on outside click
+        document.addEventListener('click', function (e) {
+            if (!navProductsItem.contains(e.target) && !megaDropdown.contains(e.target)) {
+                megaDropdown.classList.remove('is-open');
+                navProductsItem.classList.remove('is-open');
+                if (navProductsTrigger) {
+                    navProductsTrigger.classList.remove('menu-open');
+                    navProductsTrigger.setAttribute('aria-expanded', 'false');
+                }
+            }
+        });
+
+        /* ── Level 1 Category Switching ── */
+        const catItems = megaDropdown.querySelectorAll('.mega-cat-item');
+        const subcatPanels = megaDropdown.querySelectorAll('.mega-subcat-panel');
+        const featuredCards = megaDropdown.querySelectorAll('.mega-featured-card');
+        const leafPanels = megaDropdown.querySelectorAll('.mega-leaf-panel');
+
+        function activateLeaf(subcatId) {
+            leafPanels.forEach(function (panel) {
+                if (panel.getAttribute('data-subcat') === subcatId) {
+                    panel.classList.add('active');
+                } else {
+                    panel.classList.remove('active');
+                }
+            });
+        }
+
+        catItems.forEach(function (catItem) {
+            function activateCat() {
+                const catId = catItem.getAttribute('data-cat-id');
+
+                // Update Level 1 Active State
+                catItems.forEach(function (ci) { ci.classList.remove('active'); });
+                catItem.classList.add('active');
+
+                // Update Level 2 Subcategory Panel
+                let activePanel = null;
+                subcatPanels.forEach(function (panel) {
+                    if (panel.getAttribute('data-cat') === catId) {
+                        panel.classList.add('active');
+                        activePanel = panel;
+                    } else {
+                        panel.classList.remove('active');
+                    }
+                });
+
+                // Update Level 4 Featured Spotlight Card
+                featuredCards.forEach(function (card) {
+                    if (card.getAttribute('data-cat') === catId) {
+                        card.classList.add('active');
+                    } else {
+                        card.classList.remove('active');
+                    }
+                });
+
+                // Sync Level 3 with active subcategory in this panel
+                if (activePanel) {
+                    const currentSubcat = activePanel.querySelector('.mega-subcat-item.active') || activePanel.querySelector('.mega-subcat-item');
+                    if (currentSubcat) {
+                        currentSubcat.classList.add('active');
+                        const subcatId = currentSubcat.getAttribute('data-subcat-id');
+                        activateLeaf(subcatId);
+                    }
+                }
+            }
+
+            catItem.addEventListener('mouseenter', activateCat);
+            catItem.addEventListener('click', activateCat);
+        });
+
+        /* ── Level 2 Subcategory Switching ── */
+        const subcatItems = megaDropdown.querySelectorAll('.mega-subcat-item');
+
+        subcatItems.forEach(function (subcatItem) {
+            function activateSubcat() {
+                const parentPanel = subcatItem.closest('.mega-subcat-panel');
+                if (parentPanel) {
+                    parentPanel.querySelectorAll('.mega-subcat-item').forEach(function (si) {
+                        si.classList.remove('active');
+                    });
+                }
+                subcatItem.classList.add('active');
+
+                const subcatId = subcatItem.getAttribute('data-subcat-id');
+                activateLeaf(subcatId);
+            }
+
+            subcatItem.addEventListener('mouseenter', activateSubcat);
+            subcatItem.addEventListener('click', activateSubcat);
+        });
+    }
+
+    /* ── Mobile Category Toggle ── */
+    const mobileCatToggle = document.getElementById('mobileCatToggle');
+    const mobileCatSublist = document.getElementById('mobileCatSublist');
+    if (mobileCatToggle && mobileCatSublist) {
+        mobileCatToggle.addEventListener('click', function (e) {
+            e.preventDefault();
+            const isOpen = mobileCatSublist.classList.toggle('open');
+            mobileCatToggle.classList.toggle('open', isOpen);
+            mobileCatToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        });
+    }
+
     /* ── Scroll Fade Animations ── */
     const fadeEls = document.querySelectorAll('.fade-up');
     if (fadeEls.length > 0 && 'IntersectionObserver' in window) {
@@ -70,21 +226,59 @@ document.addEventListener('DOMContentLoaded', function () {
     const productsCount = document.getElementById('products-count');
 
     let activeCategory = 'all';
+    let activeSubcat = null;
+    let activeSlug = null;
     let searchQuery = '';
+
+    const subcatMap = {
+        'reamers': { label: 'Reamers & Deburring', keywords: ['reamer', 'deburr'] },
+        'countersinks': { label: 'Countersinks & Counterbores', keywords: ['counter', 'countersink', 'counterbore'] },
+        'milling': { label: 'Parting Off Blades', keywords: ['parting', 'blade'] },
+        'micrometers': { label: 'Micrometers & Heads', keywords: ['micrometer', 'quantumike', 'mdh'] },
+        'inside-measuring': { label: 'Inside Measuring Instruments', keywords: ['holtest', 'inside', '3-point', 'internal', 'head', 'caliper jaw'] },
+        'calipers': { label: 'Calipers & Height Gauges', keywords: ['caliper', 'height', 'gauge', 'vernier', 'dial', 'lh-600f'] },
+        'spring-plungers': { label: 'Spring Plungers', keywords: ['spring plunger', 'plunger', 'thrust pin', 'slot and ball', 'long-lok'] },
+        'indexing-plungers': { label: 'Indexing Plungers', keywords: ['indexing', 'kipp', '1.4305', 'positioning'] },
+        'fasteners-bearings': { label: 'Fasteners & Bearings', keywords: ['bearing', 'fastener', 'bolt', 'hex', 'bushing'] },
+        'superalloys': { label: 'Superalloys & High-Nickel', keywords: ['alloy c 22', 'alloy x', 'inconel', 'superalloy', 'alloy'] },
+        'aero-fittings': { label: 'Aviation Fittings & Consumables', keywords: ['ams', 'fitting', 'thermal', 'welding', 'electrode'] },
+        'aero-seals': { label: 'Aerospace Fasteners & Seals', keywords: ['fastener', 'seal', 'o-ring', 'titanium', 'hydraulic'] },
+        'alloy-steels': { label: 'Alloy Steels & Tubes', keywords: ['steel', 'hex bar', 'rectangle bar', 'streamline tube', 'tube'] },
+        'aluminium-profiles': { label: 'Aluminium Profiles & Extrusions', keywords: ['aluminum angle', 'aluminum channel', 't slot', 'angle', 'channel', 'extrusion', '6082'] },
+        'sheets-plates': { label: 'Sheets, Plates & Foils', keywords: ['foil', 'tread plate', 'plate', 'sheet'] }
+    };
 
     function updateDisplay() {
         let visible = 0;
         productCards.forEach(function (card) {
-            const cat = card.getAttribute('data-category');
-            const name = card.getAttribute('data-name') || '';
-            const desc = card.getAttribute('data-desc') || '';
-            const matchCat = activeCategory === 'all' || cat === activeCategory;
-            const matchSearch = searchQuery === '' ||
-                name.toLowerCase().includes(searchQuery) ||
-                desc.toLowerCase().includes(searchQuery) ||
-                cat.toLowerCase().includes(searchQuery);
+            const cat = card.getAttribute('data-category') || '';
+            const name = (card.getAttribute('data-name') || '').toLowerCase();
+            const desc = (card.getAttribute('data-desc') || '').toLowerCase();
+            const slug = (card.getAttribute('data-slug') || '').toLowerCase();
+            const matchCat = activeCategory === 'all' || cat.toLowerCase() === activeCategory.toLowerCase();
 
-            if (matchCat && matchSearch) {
+            let matchSlug = true;
+            if (activeSlug) {
+                matchSlug = (slug === activeSlug.toLowerCase()) || slug.startsWith(activeSlug.toLowerCase());
+            }
+
+            let matchSubcat = true;
+            if (activeSubcat && subcatMap[activeSubcat]) {
+                const keywords = subcatMap[activeSubcat].keywords;
+                matchSubcat = keywords.some(function (kw) {
+                    return name.includes(kw) || desc.includes(kw);
+                });
+            }
+
+            let matchSearch = true;
+            if (searchQuery !== '') {
+                const searchTerms = searchQuery.split(/\s+/).filter(Boolean);
+                matchSearch = searchTerms.length === 0 || searchTerms.every(function (term) {
+                    return name.includes(term) || desc.includes(term) || cat.toLowerCase().includes(term);
+                });
+            }
+
+            if (matchCat && matchSlug && matchSubcat && matchSearch) {
                 card.style.display = '';
                 visible++;
             } else {
@@ -92,8 +286,26 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
+        const noResults = document.getElementById('no-results');
+        if (noResults) {
+            noResults.style.display = (visible === 0) ? 'block' : 'none';
+        }
+
+        const activeCatLabel = document.getElementById('active-category-label');
+        if (activeCatLabel) {
+            activeCatLabel.textContent = (activeCategory === 'all') ? 'All Categories' : activeCategory;
+        }
+
         if (productsCount) {
-            productsCount.textContent = visible + ' product' + (visible !== 1 ? 's' : '') + ' found';
+            let label = visible + ' precision product' + (visible !== 1 ? 's' : '') + ' found';
+            if (searchQuery) {
+                label += ' for "' + searchQuery + '"';
+            } else if (activeSubcat && subcatMap[activeSubcat]) {
+                label += ' in ' + subcatMap[activeSubcat].label;
+            } else if (activeCategory !== 'all') {
+                label += ' in ' + activeCategory;
+            }
+            productsCount.textContent = label;
         }
     }
 
@@ -103,29 +315,122 @@ document.addEventListener('DOMContentLoaded', function () {
                 filterBtns.forEach(function (b) { b.classList.remove('active'); });
                 btn.classList.add('active');
                 activeCategory = btn.getAttribute('data-filter');
+                activeSubcat = null;
+                activeSlug = null;
+                if (searchInput && searchInput.placeholder.startsWith('Showing:')) {
+                    searchInput.placeholder = 'Search by name, spec, or standard...';
+                }
                 updateDisplay();
             });
         });
+
+        // Auto-select category & subcat & slug & search if passed in URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const catQuery = urlParams.get('category');
+        const subcatQueryParam = urlParams.get('subcat');
+        const slugQueryParam = urlParams.get('slug');
+        const searchQueryParam = urlParams.get('search');
+
+        if (catQuery) {
+            const matchedBtn = Array.from(filterBtns).find(function (b) {
+                return b.getAttribute('data-filter').toLowerCase() === catQuery.toLowerCase();
+            });
+            if (matchedBtn) {
+                filterBtns.forEach(function (b) { b.classList.remove('active'); });
+                matchedBtn.classList.add('active');
+                activeCategory = matchedBtn.getAttribute('data-filter');
+            }
+        }
+
+        if (subcatQueryParam && subcatMap[subcatQueryParam]) {
+            activeSubcat = subcatQueryParam;
+            if (searchInput) {
+                searchInput.placeholder = 'Showing: ' + subcatMap[subcatQueryParam].label;
+            }
+        }
+
+        if (slugQueryParam) {
+            activeSlug = slugQueryParam.trim().toLowerCase();
+        }
+
+        if (searchQueryParam) {
+            searchQuery = searchQueryParam.trim().toLowerCase();
+            if (searchInput) {
+                searchInput.value = searchQueryParam;
+            }
+        }
+
+        if (catQuery || subcatQueryParam || slugQueryParam || searchQueryParam) {
+            updateDisplay();
+        }
     }
+
+    const searchClearBtn = document.getElementById('search-clear-btn');
 
     if (searchInput) {
         searchInput.addEventListener('input', function () {
             searchQuery = searchInput.value.trim().toLowerCase();
+            activeSubcat = null;
+            activeSlug = null;
+            if (searchClearBtn) {
+                searchClearBtn.style.display = searchInput.value.length > 0 ? 'inline-flex' : 'none';
+            }
             updateDisplay();
         });
+
+        if (searchClearBtn) {
+            searchClearBtn.addEventListener('click', function () {
+                searchInput.value = '';
+                searchQuery = '';
+                searchClearBtn.style.display = 'none';
+                updateDisplay();
+                searchInput.focus();
+            });
+        }
+    }
+
+    function resetAllFilters() {
+        searchQuery = '';
+        activeCategory = 'all';
+        activeSubcat = null;
+        activeSlug = null;
+        if (searchInput) {
+            searchInput.value = '';
+            searchInput.placeholder = 'Search by name, spec, or standard (e.g. Hex Bar, Caliper, Reamer)...';
+        }
+        if (searchClearBtn) {
+            searchClearBtn.style.display = 'none';
+        }
+        filterBtns.forEach(function (b) {
+            b.classList.toggle('active', b.getAttribute('data-filter') === 'all');
+        });
+        updateDisplay();
     }
 
     if (filterClear) {
-        filterClear.addEventListener('click', function () {
-            searchQuery = '';
-            activeCategory = 'all';
-            if (searchInput) searchInput.value = '';
-            filterBtns.forEach(function (b) {
-                b.classList.toggle('active', b.getAttribute('data-filter') === 'all');
-            });
-            updateDisplay();
-        });
+        filterClear.addEventListener('click', resetAllFilters);
     }
+
+    const noResultsResetBtn = document.getElementById('no-results-reset-btn');
+    if (noResultsResetBtn) {
+        noResultsResetBtn.addEventListener('click', resetAllFilters);
+    }
+
+    document.querySelectorAll('.js-suggest-chip').forEach(function (chip) {
+        chip.addEventListener('click', function () {
+            const query = chip.getAttribute('data-query');
+            if (query && searchInput) {
+                searchInput.value = query;
+                searchQuery = query.toLowerCase();
+                if (searchClearBtn) searchClearBtn.style.display = 'inline-flex';
+                activeCategory = 'all';
+                filterBtns.forEach(function (b) {
+                    b.classList.toggle('active', b.getAttribute('data-filter') === 'all');
+                });
+                updateDisplay();
+            }
+        });
+    });
 
     /* ── Product Modal ── */
     const modalOverlay = document.getElementById('product-modal');

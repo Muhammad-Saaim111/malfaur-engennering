@@ -8,7 +8,7 @@
 {{-- ═══════════════════════════════════════
      PAGE HERO
 ═══════════════════════════════════════ --}}
-<section class="page-hero" style="padding:6rem 0;" aria-labelledby="about-hero-heading">
+<section class="page-hero" aria-labelledby="about-hero-heading">
     <div class="page-hero-image" aria-hidden="true">
         <img src="{{ asset('images/about-hero.png') }}" alt="" loading="eager">
     </div>

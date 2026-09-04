@@ -196,9 +196,9 @@
                 data-specs='[["Type","Deep Groove Ball Bearing"],["Material","52100 Chrome Steel"],["Tolerance","ISO P5 / P6"],["Lubrication","Grease / Open"],["Standard","DIN 625"]]'>
                 <div class="product-card-image">
                     <img src="{{ asset('images/product-bearings.png') }}" alt="Precision Ball Bearings" loading="lazy">
-                    <span class="product-card-category">Bearings</span>
                 </div>
                 <div class="product-card-body">
+                    <span class="product-card-category-tag">Bearings</span>
                     <h3 class="product-card-name">Precision Ball Bearings</h3>
                     <p class="product-card-desc">High-grade steel ball bearings manufactured to exacting tolerances for demanding rotary and load-bearing applications.</p>
                     <div class="product-card-footer">
@@ -217,9 +217,9 @@
                 data-specs='[["Pressure Rating","Up to 400 Bar"],["Material","Steel / Brass"],["Thread","BSP / Metric / JIC"],["Seal Type","O-Ring / Cone"],["Standard","ISO 8434"]]'>
                 <div class="product-card-image">
                     <img src="{{ asset('images/product-hydraulics.png') }}" alt="Hydraulic Fittings" loading="lazy">
-                    <span class="product-card-category">Hydraulics</span>
                 </div>
                 <div class="product-card-body">
+                    <span class="product-card-category-tag">Hydraulics</span>
                     <h3 class="product-card-name">Hydraulic Fittings &amp; Connectors</h3>
                     <p class="product-card-desc">High-pressure rated hydraulic fittings and connectors for professional fluid power systems and industrial machinery.</p>
                     <div class="product-card-footer">
@@ -238,9 +238,9 @@
                 data-specs='[["Grade","8.8 / 10.9 / A2 / A4"],["Material","Steel / Stainless Steel"],["Finish","Zinc / HDG / Plain"],["Thread","Metric / UNC / UNF"],["Standard","DIN / ISO / BS"]]'>
                 <div class="product-card-image">
                     <img src="{{ asset('images/product-fasteners.png') }}" alt="Industrial Fasteners" loading="lazy">
-                    <span class="product-card-category">Fasteners</span>
                 </div>
                 <div class="product-card-body">
+                    <span class="product-card-category-tag">Fasteners</span>
                     <h3 class="product-card-name">Industrial Grade Fasteners</h3>
                     <p class="product-card-desc">Comprehensive fastener range including high-tensile bolts, nuts, washers and fixings for structural and engineering applications.</p>
                     <div class="product-card-footer">
