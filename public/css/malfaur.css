@@ -507,77 +507,205 @@ input, textarea, select { font-family: inherit; }
   transform: translateX(2px);
 }
 
-/* Column 4 Featured Spotlight Card */
-.mega-featured-card {
-  display: none;
-  height: auto;
-}
-.mega-featured-card.active {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  animation: megaFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.featured-brand {
-  font-size: 1.2rem;
-  font-weight: 800;
-  color: #EA580C;
-  letter-spacing: -0.01em;
-  margin-bottom: 0.35rem;
-  line-height: 1;
-}
-.featured-name {
-  font-size: 0.98rem;
-  font-weight: 700;
-  color: #111827;
-  margin-bottom: 0.35rem;
-  line-height: 1.35;
-}
-.featured-link {
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: #4B5563;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
-  margin-bottom: 0.75rem;
-  transition: color 0.15s ease;
-}
-.featured-link:hover {
-  color: #EA580C;
-}
-.featured-arrow {
-  color: #EA580C;
-  font-weight: 700;
-}
-.featured-img-wrap {
-  width: 100%;
-  max-width: 260px;
-  height: 200px;
-  margin-top: 0.25rem;
+/* ── Mega Placeholder Panel (When No Category Selected) ── */
+.mega-placeholder-panel {
+  grid-column: 2 / 4;
+  border-right: 1px solid #E5E7EB;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #F9FAFB;
-  border-radius: var(--radius-md);
+  padding: 2.5rem 2rem;
+  background: linear-gradient(180deg, #FAFAFA 0%, #FFFFFF 100%);
+  animation: megaFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.products-mega-dropdown.has-category-selected .mega-placeholder-panel {
+  display: none !important;
+}
+.products-mega-dropdown.no-category-selected .mega-col-2,
+.products-mega-dropdown.no-category-selected .mega-col-3 {
+  display: none !important;
+}
+
+.mega-placeholder-content {
+  max-width: 380px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.mega-placeholder-icon-wrap {
+  width: 68px;
+  height: 68px;
+  border-radius: 18px;
+  background: rgba(234, 88, 12, 0.08);
+  color: #EA580C;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.15rem;
+  border: 1.5px solid rgba(234, 88, 12, 0.2);
+  box-shadow: 0 4px 14px rgba(234, 88, 12, 0.08);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.mega-placeholder-panel:hover .mega-placeholder-icon-wrap {
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 8px 20px rgba(234, 88, 12, 0.16);
+}
+.mega-placeholder-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #111827;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.015em;
+}
+.mega-placeholder-desc {
+  font-size: 0.88rem;
+  color: #6B7280;
+  line-height: 1.55;
+  margin-bottom: 1.35rem;
+}
+.mega-placeholder-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #FFFFFF;
   border: 1px solid #E5E7EB;
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #4B5563;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+.mega-hint-pulse {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #EA580C;
+  box-shadow: 0 0 0 0 rgba(234, 88, 12, 0.6);
+  animation: megaPulse 2s infinite;
+}
+@keyframes megaPulse {
+  0% { box-shadow: 0 0 0 0 rgba(234, 88, 12, 0.6); }
+  70% { box-shadow: 0 0 0 8px rgba(234, 88, 12, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(234, 88, 12, 0); }
+}
+
+/* ── Column 4 Permanent Logo & Brand Showcase Card ── */
+.mega-brand-showcase-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  animation: megaFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.mega-brand-logo-container {
+  background: linear-gradient(145deg, #081120 0%, #101c34 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 1.15rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 18px rgba(8, 17, 32, 0.12);
+  margin-bottom: 0.9rem;
+  position: relative;
   overflow: hidden;
-  padding: 0.75rem;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
-  transition: border-color 0.25s ease, box-shadow 0.25s ease;
 }
-.mega-featured-card:hover .featured-img-wrap {
-  border-color: #D1D5DB;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.07);
+.mega-brand-logo-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2.5px;
+  background: linear-gradient(90deg, #EA580C 0%, #F59E0B 100%);
 }
-.featured-img-wrap img {
-  max-height: 100%;
+.mega-brand-logo-container a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+.mega-brand-card-logo {
+  height: 68px;
+  width: auto;
   max-width: 100%;
   object-fit: contain;
-  transition: transform 0.35s ease;
+  display: block;
+  transition: transform 0.25s ease;
 }
-.mega-featured-card:hover .featured-img-wrap img {
-  transform: scale(1.05);
+.mega-brand-logo-container:hover .mega-brand-card-logo {
+  transform: scale(1.04);
+}
+.mega-brand-card-body {
+  display: flex;
+  flex-direction: column;
+}
+.mega-brand-tag {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #EA580C;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.25rem;
+}
+.mega-brand-heading {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #111827;
+  margin-bottom: 0.35rem;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+.mega-brand-text {
+  font-size: 0.82rem;
+  color: #6B7280;
+  line-height: 1.45;
+  margin-bottom: 0.85rem;
+}
+.mega-brand-perks {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 0.95rem;
+  padding: 0.65rem 0.8rem;
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: var(--radius-sm);
+}
+.mega-perk-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+  color: #374151;
+  font-weight: 500;
+}
+.mega-perk-row svg {
+  color: #16A34A;
+  flex-shrink: 0;
+}
+.mega-brand-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  background: var(--navy-dark);
+  color: #ffffff;
+  padding: 0.6rem 0.9rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+.mega-brand-btn:hover {
+  background: #EA580C;
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(234, 88, 12, 0.3);
 }
 
 @keyframes megaFadeIn {

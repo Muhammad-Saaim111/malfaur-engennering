@@ -118,8 +118,27 @@
                         </div>
                     </div>
 
+                    {{-- ── PLACEHOLDER: WHEN NO CATEGORY IS SELECTED ── --}}
+                    <div class="mega-placeholder-panel" id="megaPlaceholderPanel">
+                        <div class="mega-placeholder-content">
+                            <div class="mega-placeholder-icon-wrap">
+                                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M4 6h16M4 12h10M4 18h7"></path>
+                                    <circle cx="18" cy="15" r="3"></circle>
+                                    <path d="m20.5 17.5 2 2"></path>
+                                </svg>
+                            </div>
+                            <h3 class="mega-placeholder-title">Select Any Category</h3>
+                            <p class="mega-placeholder-desc">Hover over any category on the left to explore subcategories and available precision components.</p>
+                            <div class="mega-placeholder-badge">
+                                <span class="mega-hint-pulse"></span>
+                                <span>Choose from 5 Categories on the left</span>
+                            </div>
+                        </div>
+                    </div>
+
                     {{-- ── COLUMN 2: SUB-CATEGORIES (Level 2) ── --}}
-                    <div class="mega-col mega-col-2">
+                    <div class="mega-col mega-col-2" id="megaColSubcat">
                         <div class="mega-col-inner">
                             
                             {{-- Cutting Tools Subcategories --}}
@@ -221,7 +240,7 @@
                     </div>
 
                     {{-- ── COLUMN 3: ITEMS / PRODUCTS (Level 3) ── --}}
-                    <div class="mega-col mega-col-3">
+                    <div class="mega-col mega-col-3" id="megaColItems">
                         <div class="mega-col-inner">
                             
                             {{-- Cutting Tools - Reamers --}}
@@ -420,70 +439,48 @@
                         </div>
                     </div>
 
-                    {{-- ── COLUMN 4: FEATURED PRODUCT SPOTLIGHT ── --}}
+                    {{-- ── COLUMN 4: LOGO & BRAND CARD (Always Visible) ── --}}
                     <div class="mega-col mega-col-featured">
                         <div class="mega-col-inner">
-                            
-                            {{-- Cutting Tools Featured --}}
-                            <div class="mega-featured-card" data-cat="cutting-tools">
-                                <span class="featured-brand">Malfaur Precision</span>
-                                <h4 class="featured-name">Parting Off Blades &amp; Tooling</h4>
-                                <a href="{{ route('products') }}?category=Cutting+Tools&subcat=milling" class="featured-link">
-                                    High-performance CNC tooling <span class="featured-arrow">&gt;</span>
-                                </a>
-                                <div class="featured-img-wrap">
-                                    <img src="{{ asset('images/product-cutting-tools.png') }}" alt="Parting Off Blades" loading="lazy">
+                            <div class="mega-brand-showcase-card">
+                                <div class="mega-brand-logo-container">
+                                    <a href="{{ route('home') }}" aria-label="Malfaur Engineering — Home">
+                                        <img src="{{ asset('images/logo-transparent.png') }}" alt="Malfaur Engineering" class="mega-brand-card-logo">
+                                    </a>
+                                </div>
+                                <div class="mega-brand-card-body">
+                                    <span class="mega-brand-tag">Precision Engineering</span>
+                                    <h4 class="mega-brand-heading">Malfaur Engineering</h4>
+                                    <p class="mega-brand-text">Supplying precision components, cutting tools, standard parts and aerospace alloys across the UK.</p>
+                                    <div class="mega-brand-perks">
+                                        <div class="mega-perk-row">
+                                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+                                                <polyline points="20 6 9 17 4 12"></polyline>
+                                            </svg>
+                                            <span>Full Material Certification</span>
+                                        </div>
+                                        <div class="mega-perk-row">
+                                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+                                                <polyline points="20 6 9 17 4 12"></polyline>
+                                            </svg>
+                                            <span>Nationwide Fast Dispatch</span>
+                                        </div>
+                                        <div class="mega-perk-row">
+                                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+                                                <polyline points="20 6 9 17 4 12"></polyline>
+                                            </svg>
+                                            <span>Expert Technical Support</span>
+                                        </div>
+                                    </div>
+                                    <a href="{{ route('contact') }}" class="mega-brand-btn">
+                                        <span>Request Quote / Enquire</span>
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                                            <polyline points="12 5 19 12 12 19"></polyline>
+                                        </svg>
+                                    </a>
                                 </div>
                             </div>
-
-                            {{-- Measuring Equipment Featured (Matches reference image LH-600F / Mitutoyo) --}}
-                            <div class="mega-featured-card" data-cat="measuring-equipment">
-                                <span class="featured-brand" style="color:#d9381e;">Mitutoyo</span>
-                                <h4 class="featured-name">The LH-600F<br>Height Gauge</h4>
-                                <a href="{{ route('products.show', 'mitutoyo-quantumike-ip65-coolant-proof-micrometer-293-140-40') }}" class="featured-link">
-                                    Easy operation, high-accuracy <span class="featured-arrow">&gt;</span>
-                                </a>
-                                <div class="featured-img-wrap">
-                                    <img src="{{ asset('images/lh-600f-height-gauge.jpg') }}" alt="Mitutoyo LH-600F Height Gauge" loading="lazy">
-                                </div>
-                            </div>
-
-                            {{-- Standard Parts Featured --}}
-                            <div class="mega-featured-card" data-cat="standard-parts">
-                                <span class="featured-brand">KIPP Mechanical</span>
-                                <h4 class="featured-name">Precision Indexing Plungers</h4>
-                                <a href="{{ route('products.show', 'kipp-precision-indexing-plungers-with-cylindrical-pin-standard-steel-grip-ball-thermoplastic-blackgrey') }}" class="featured-link">
-                                    German standard components <span class="featured-arrow">&gt;</span>
-                                </a>
-                                <div class="featured-img-wrap">
-                                    <img src="{{ asset('images/product-fasteners.png') }}" alt="Precision Indexing Plungers" loading="lazy">
-                                </div>
-                            </div>
-
-                            {{-- Aerospace Parts Featured --}}
-                            <div class="mega-featured-card" data-cat="aerospace-parts">
-                                <span class="featured-brand">Malfaur Aerospace</span>
-                                <h4 class="featured-name">INCONEL® 600 Round Bar</h4>
-                                <a href="{{ route('products.show', 'inconel-600-round-bar') }}" class="featured-link">
-                                    Extreme heat &amp; corrosion alloy <span class="featured-arrow">&gt;</span>
-                                </a>
-                                <div class="featured-img-wrap">
-                                    <img src="{{ asset('images/hero-engineering.png') }}" alt="INCONEL 600 Superalloy" loading="lazy">
-                                </div>
-                            </div>
-
-                            {{-- Raw Materials Featured --}}
-                            <div class="mega-featured-card" data-cat="raw-materials">
-                                <span class="featured-brand">Malfaur Materials</span>
-                                <h4 class="featured-name">6082-T6 Structural Aluminium</h4>
-                                <a href="{{ route('products') }}?category=Raw+Materials" class="featured-link">
-                                    Cut to size with mill certs <span class="featured-arrow">&gt;</span>
-                                </a>
-                                <div class="featured-img-wrap">
-                                    <img src="{{ asset('images/hero-engineering.png') }}" alt="Structural Engineering Raw Materials" loading="lazy">
-                                </div>
-                            </div>
-
                         </div>
                     </div>
 

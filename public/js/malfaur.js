@@ -69,6 +69,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     navProductsTrigger.classList.remove('menu-open');
                     navProductsTrigger.setAttribute('aria-expanded', 'false');
                 }
+                resetToPlaceholder();
             }, 180);
         }
 
@@ -91,6 +92,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     navProductsTrigger.classList.remove('menu-open');
                     navProductsTrigger.setAttribute('aria-expanded', 'false');
                 }
+                resetToPlaceholder();
             }
         });
 
@@ -103,14 +105,26 @@ document.addEventListener('DOMContentLoaded', function () {
                     navProductsTrigger.classList.remove('menu-open');
                     navProductsTrigger.setAttribute('aria-expanded', 'false');
                 }
+                resetToPlaceholder();
             }
         });
 
-        /* ── Level 1 Category Switching ── */
+        /* ── Level 1 Category Switching & Placeholder State ── */
         const catItems = megaDropdown.querySelectorAll('.mega-cat-item');
         const subcatPanels = megaDropdown.querySelectorAll('.mega-subcat-panel');
-        const featuredCards = megaDropdown.querySelectorAll('.mega-featured-card');
         const leafPanels = megaDropdown.querySelectorAll('.mega-leaf-panel');
+        const megaTopLink = megaDropdown.querySelector('.mega-top-link');
+
+        function resetToPlaceholder() {
+            megaDropdown.classList.add('no-category-selected');
+            megaDropdown.classList.remove('has-category-selected');
+            catItems.forEach(function (ci) { ci.classList.remove('active'); });
+            subcatPanels.forEach(function (p) { p.classList.remove('active'); });
+            leafPanels.forEach(function (p) { p.classList.remove('active'); });
+        }
+
+        // Initialize with placeholder on load
+        resetToPlaceholder();
 
         function activateLeaf(subcatId) {
             leafPanels.forEach(function (panel) {
@@ -122,48 +136,54 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
 
-        catItems.forEach(function (catItem) {
-            function activateCat() {
-                const catId = catItem.getAttribute('data-cat-id');
+        function activateCat(catItem) {
+            const catId = catItem.getAttribute('data-cat-id');
 
-                // Update Level 1 Active State
-                catItems.forEach(function (ci) { ci.classList.remove('active'); });
-                catItem.classList.add('active');
+            // Switch from placeholder to active categories
+            megaDropdown.classList.remove('no-category-selected');
+            megaDropdown.classList.add('has-category-selected');
 
-                // Update Level 2 Subcategory Panel
-                let activePanel = null;
-                subcatPanels.forEach(function (panel) {
-                    if (panel.getAttribute('data-cat') === catId) {
-                        panel.classList.add('active');
-                        activePanel = panel;
-                    } else {
-                        panel.classList.remove('active');
-                    }
-                });
+            // Update Level 1 Active State
+            catItems.forEach(function (ci) { ci.classList.remove('active'); });
+            catItem.classList.add('active');
 
-                // Update Level 4 Featured Spotlight Card
-                featuredCards.forEach(function (card) {
-                    if (card.getAttribute('data-cat') === catId) {
-                        card.classList.add('active');
-                    } else {
-                        card.classList.remove('active');
-                    }
-                });
+            // Update Level 2 Subcategory Panel
+            let activePanel = null;
+            subcatPanels.forEach(function (panel) {
+                if (panel.getAttribute('data-cat') === catId) {
+                    panel.classList.add('active');
+                    activePanel = panel;
+                } else {
+                    panel.classList.remove('active');
+                }
+            });
 
-                // Sync Level 3 with active subcategory in this panel
-                if (activePanel) {
-                    const currentSubcat = activePanel.querySelector('.mega-subcat-item.active') || activePanel.querySelector('.mega-subcat-item');
-                    if (currentSubcat) {
-                        currentSubcat.classList.add('active');
-                        const subcatId = currentSubcat.getAttribute('data-subcat-id');
-                        activateLeaf(subcatId);
-                    }
+            // Sync Level 3 with active subcategory in this panel
+            if (activePanel) {
+                const currentSubcat = activePanel.querySelector('.mega-subcat-item.active') || activePanel.querySelector('.mega-subcat-item');
+                if (currentSubcat) {
+                    currentSubcat.classList.add('active');
+                    const subcatId = currentSubcat.getAttribute('data-subcat-id');
+                    activateLeaf(subcatId);
                 }
             }
+        }
 
-            catItem.addEventListener('mouseenter', activateCat);
-            catItem.addEventListener('click', activateCat);
+        catItems.forEach(function (catItem) {
+            catItem.addEventListener('mouseenter', function () {
+                activateCat(catItem);
+            });
+            catItem.addEventListener('click', function () {
+                activateCat(catItem);
+            });
+            catItem.addEventListener('focus', function () {
+                activateCat(catItem);
+            });
         });
+
+        if (megaTopLink) {
+            megaTopLink.addEventListener('mouseenter', resetToPlaceholder);
+        }
 
         /* ── Level 2 Subcategory Switching ── */
         const subcatItems = megaDropdown.querySelectorAll('.mega-subcat-item');
